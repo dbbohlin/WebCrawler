@@ -15,8 +15,14 @@ class TestWebCrawler {
 	}
 
 	@Test
+	void testWebCrawlerNullorEmptySiteReturnsNull() {
+		assertEquals(null, crawler.crawl(null));
+	}
+	
+	@Test
 	void testWebCrawlerOpenWebSite() {
-		crawler.crawl("http://wiprodigital.com");
+		String crawlMap = crawler.crawl("http://wiprodigital.com");
+		
 	}
 
 }
