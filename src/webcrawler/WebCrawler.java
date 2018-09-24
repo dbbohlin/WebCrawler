@@ -21,35 +21,40 @@ import org.jsoup.select.Elements;
  *
  */
 public class WebCrawler {
-	private Set<Element> links;
+	private Set<String> links;
 	private String baseSite = "";
+	private int maxDepth = 1;
 	
 	public String crawl(String site) throws URISyntaxException, MalformedURLException {
+		return this.crawl(site, 1);
+	}
+	
+	public String crawl(String site, int maxDepth) throws URISyntaxException, MalformedURLException {
 		if(isSiteNullorEmpty(site)) {
 			return null;
 		}
 		setLinks();
 		setBaseSite(site);
-		this.crawlSite(site);
-		return this.links.stream()
-				.map(pageLink -> pageLink.attr("abs:href"))
-				.collect(Collectors.joining("\n"))
-				.toString();
+		setMaxDepth(maxDepth);
+		this.crawlSite(site, 0);
+		this.links.add(site);
+		return linksToString();
+
 	}
 	
-	private void setLinks() {
-		if(null == this.links) {
-			this.links = new HashSet<Element>();
-		}
-	}
-	private void crawlSite(String link) {
-		if(!this.links.contains(link)) {
+	private void crawlSite(String link, int depth) {
+		if(!this.links.contains(link) && (depth < this.maxDepth)) {
 			try {
 				Document doc = Jsoup.connect(link).get();
 				Elements pageLinks = doc.select("a[href]");
-				this.links = pageLinks.stream()
-				.filter(page -> this.isValidSite(page.attr("abs:href")))
-				.collect(Collectors.toSet());
+				++depth;
+				for(Element pageLink : pageLinks) {
+					String linkSite = pageLink.attr("abs:href");
+					if(this.isValidSite(linkSite)) {
+						this.links.add(linkSite);
+						crawlSite(linkSite, depth);
+					}	
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -57,9 +62,19 @@ public class WebCrawler {
 		}
 	}
 	
+	private void setLinks() {
+		if(null == this.links) {
+			this.links = new HashSet<String>();
+		}
+	}
+	
 	private void setBaseSite(String site) throws URISyntaxException, MalformedURLException {
 		URI uri = new URL(site).toURI();
 		this.baseSite = uri.getHost();
+	}
+
+	private void setMaxDepth(int maxDepth) {
+		this.maxDepth = maxDepth;
 	}
 	
 	private boolean isSiteNullorEmpty(String site) {
@@ -76,5 +91,11 @@ public class WebCrawler {
 			System.out.println("site ("+site+") is not a valid URI");
 		}		
 		return false;
+	}
+	
+	private String linksToString() {
+		return this.links.stream()
+				.collect(Collectors.joining("\n"))
+				.toString();
 	}
 }
