@@ -18,7 +18,7 @@ import org.jsoup.select.Elements;
 
 /**
  * @author dbohlin
- *
+ * 
  */
 public class WebCrawler {
 	private Set<String> links;
@@ -97,5 +97,45 @@ public class WebCrawler {
 		return this.links.stream()
 				.collect(Collectors.joining("\n"))
 				.toString();
+	}
+	
+	private static String instructions() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("usage: java -jar webcrawler.jar <WebSite> [depth]\n");
+		builder.append("    example: java -jar webcrawler.jar http://wiprodigital.com 2");
+		return builder.toString();
+	}
+	
+	public static void main(String[] args) {
+		WebCrawler crawler = new WebCrawler();
+		
+		if(args.length > 0) {
+			String site = args[0];
+			Integer depth = new Integer(1);
+			try {
+				URI uri = new URL(site).toURI();
+			} catch (MalformedURLException | URISyntaxException e) {
+				System.err.println("the site " + args[0] + " is not a valid site");
+				System.out.println(WebCrawler.instructions());
+			}
+			if(args.length > 1) {
+				try {
+					depth = Integer.parseInt(args[1]);
+					if(depth < 1) {
+						throw new NumberFormatException();
+					}
+				} catch (NumberFormatException e) {
+					System.err.println("this depth ("+args[1]+") is not a valid integer");
+					System.out.println(WebCrawler.instructions());
+				}
+			}
+			try {
+				System.out.println(crawler.crawl(site, depth.intValue()));
+			} catch (MalformedURLException | URISyntaxException e) {
+				System.err.println("Error occurred while trying to crawl " + site + ", Exception: " + e.getLocalizedMessage());
+			}
+		}else {
+			System.out.println(WebCrawler.instructions());
+		}
 	}
 }

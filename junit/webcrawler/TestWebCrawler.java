@@ -1,19 +1,19 @@
 package webcrawler;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 class TestWebCrawler {
 
 	private WebCrawler crawler;
-
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		crawler = new WebCrawler();
@@ -108,6 +108,7 @@ class TestWebCrawler {
 				"https://wiprodigital.com/news/the-state-of-martech-study/\n" + 
 				"https://wiprodigital.com/events/join-wipro-digital-for-two-iot-panels-at-world-economic-forum-wef/\n" + 
 				"https://wiprodigital.com/join-our-team#wdcareers_team";
+
 		try {
 			String returnString = crawler.crawl("http://wiprodigital.com");
 			assertEquals(expectedReturn, returnString);
@@ -174,7 +175,73 @@ class TestWebCrawler {
 				"https://wiprodigital.com/join-our-team#wdcareers_team";
 		try {
 			String returnString = crawler.crawl("http://wiprodigital.com", 1);
-//			System.out.println("Crawling site = " + returnString);
+			assertEquals(expectedReturn, returnString);
+		} catch (MalformedURLException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testWebCrawlerCrawlLoadImpactDepth2_ReturnsString() {
+		String expectedReturn = "https://support.loadimpact.com/4.0/test-scripting/environment-variables/\n" + 
+				"http://support.loadimpact.com/\n" + 
+				"https://support.loadimpact.com/4.0/test-running/\n" + 
+				"https://support.loadimpact.com/4.0/test-running/cloud-execution/\n" + 
+				"https://support.loadimpact.com/4.0/result-analysis/insights-url-table/\n" + 
+				"https://support.loadimpact.com/4.0/how-to-tutorials/load-testing-with-postman-collections/\n" + 
+				"https://support.loadimpact.com/4.0/getting-started/load-impact-trial-guide/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/load-test-ramping-configurations/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/\n" + 
+				"https://support.loadimpact.com/4.0/result-analysis/insights-filters/\n" + 
+				"https://support.loadimpact.com/4.0/integrations/\n" + 
+				"https://support.loadimpact.com/4.0/getting-started/\n" + 
+				"https://support.loadimpact.com/4.0/how-to-tutorials/how-to-do-browser-recording/\n" + 
+				"https://support.loadimpact.com/4.0/integrations/jenkins-integration/\n" + 
+				"https://support.loadimpact.com/4.0/how-to-tutorials/\n" + 
+				"https://support.loadimpact.com/4.0/getting-started/hello-world/\n" + 
+				"https://support.loadimpact.com/4.0/frequently-asked-questions/why-should-i-filter-domains/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/intro/\n" + 
+				"https://support.loadimpact.com/4.0/how-to-tutorials/how-to-convert-har-to-k6-test/\n" + 
+				"https://support.loadimpact.com/4.0/team-project-management/\n" + 
+				"https://support.loadimpact.com/4.0/getting-started/sample-script/\n" + 
+				"https://support.loadimpact.com/4.0/result-analysis/insights-analysis-view/\n" + 
+				"https://support.loadimpact.com/4.0/team-project-management/projects/\n" + 
+				"https://support.loadimpact.com/4.0/frequently-asked-questions/what-ip-addresses-are-used-by-load-impact/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/test-structure-breakdown/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/checks/\n" + 
+				"https://support.loadimpact.com/4.0/team-project-management/organizations/\n" + 
+				"https://support.loadimpact.com/\n" + 
+				"https://support.loadimpact.com/4.0/test-running/local-on-premise-execution/\n" + 
+				"https://support.loadimpact.com/4.0/getting-started/next-steps/\n" + 
+				"https://support.loadimpact.com/4.0/result-analysis/insights-overview/\n" + 
+				"https://support.loadimpact.com/4.0/pricing/pricing-faq/\n" + 
+				"https://support.loadimpact.com/4.0/migrating-lua-to-js/migration-overview/\n" + 
+				"https://support.loadimpact.com/4.0/integrations/circleci-integration/\n" + 
+				"https://support.loadimpact.com/4.0/frequently-asked-questions/\n" + 
+				"https://support.loadimpact.com/4.0/team-project-management/adding-team-members/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/test-configuration-options/\n" + 
+				"https://support.loadimpact.com/4.0/\n" + 
+				"https://support.loadimpact.com/4.0/pricing/\n" + 
+				"https://support.loadimpact.com/4.0/getting-started/load-test-preparations/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/modules-imports/\n" + 
+				"https://support.loadimpact.com/4.0/result-analysis/insights-performance-overview/\n" + 
+				"https://support.loadimpact.com/4.0/getting-started/product-overview/\n" + 
+				"https://support.loadimpact.com/4.0/migrating-lua-to-js/lua-to-js/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/handling-dynamic-tokens-in-k6-scripts/\n" + 
+				"https://support.loadimpact.com/4.0/test-running/logging-into-cloud-service-from-k6/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/thresholds/\n" + 
+				"https://support.loadimpact.com/4.0/result-analysis/insights-break-down-tree/\n" + 
+				"https://support.loadimpact.com/4.0/how-to-tutorials/how-to-open-firewall-to-load-impact-only/\n" + 
+				"https://support.loadimpact.com/4.0/#\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/tags/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/custom-metrics/\n" + 
+				"https://support.loadimpact.com/4.0/migrating-lua-to-js/\n" + 
+				"https://support.loadimpact.com/4.0/result-analysis/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/http-authentication/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/test-setup-teardown-life-cycle/\n" + 
+				"https://support.loadimpact.com/4.0/test-scripting/main-function/";
+		try {
+			String returnString = crawler.crawl("https://support.loadimpact.com/4.0/", 2);
 			assertEquals(expectedReturn, returnString);
 		} catch (MalformedURLException | URISyntaxException e) {
 			e.printStackTrace();
