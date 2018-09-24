@@ -12,6 +12,16 @@ Please provide a README.md file that explains how to build, test, and run your s
 
 Once done, please make your solution available on Github and forward the link. Where possible please include your commit history to provide visibility of your thinking and working practice.
 
+<h2>Summary</h2>
+
+The design is simple enough. It uses the HTML library jsoup for parsing the HTML document and locating the required tags. The tags are then parsed to find the desired tags. The data is then stored in a number of HashSets. These HashSets are then processed to a String with an identify multi-word tag at the beginning of each list to identify what type of link is being displayed. 
+
+I decided on using a return of a String to make it easier to display the result, but since the data is stored in a HashSet it is possible to return the data in any order or to return the data as a Collection of some sort. I also used HashSets because I didn't believe that the application needed to show more than one indicator of a link.
+
+The main method is recursive, since that is the easiest way to keep track of the depth of the crawl. Also, the depth of the crawl is defaulted to just the first page, but it is possible for the user to modify the depth at their discretion. I set it up this way because of the recursion, even though since the first tenet of this problem is to only be following the links within the local domain, which by definition should have a finite structure, I didn't want a runaway recursion to cause this application to fail, unless the user deliberately push the process. By using a depth it becomes easier to modify this application to process more than just the local links.
+
+There are a number of private helper methods to facilitate modifying the code as well as a static main method so that the application can be run from a class file or as a runnable jar file. I have given instructions on how to build the runnable jar file and run the application through it. 
+
 <h2>Build</h2>
 
 To build the executable jar file (all files should be in the same directory):
@@ -34,7 +44,7 @@ To build the executable jar file (all files should be in the same directory):
 
 <h2>Test</h2>
 
-A test file has been created using jupiter junit testing framework. This test file is found in the junit package of the WebCrawler project
+A test file has been created using jupiter junit testing framework. This test file is found in the junit package of the WebCrawler project. There are only a few tests developed to keep the verification moderate for future development. Very few tests will need to be modified and any new features should only require a simple test or set of tests to verify those new features.
 
 The tests verify that:
 <ul>
@@ -42,6 +52,7 @@ The tests verify that:
 	<li>A malformed site will return a MalformedURLException</li>
 	<li>An incorrect syntax in the site parameter will return an URISyntaxException</li>
 	<li>A correct site URL will return a String of all the links in the page</li>
+	<li>Calling the class without a depth parameter is the same as calling the class with a depth parameter of 1</li>
 	<li>A correct site URL with depth will return a String of all the links in the page to the depth specified</li>
 </ul>
 
@@ -49,12 +60,15 @@ The tests verify that:
 
 The WebCrawler is run as an executable Java jar file. The website argument is the starting page of the website to crawl the optional depth parameter is the depth the WebCrawler is to run. If the depth parameter is not used then the depth is 1.
 
-java -jar webcrawler.jar <website> [depth]
+<pre>java -jar webcrawler.jar &lt;website&gt; &lsqb;depth&rsqb;</pre>
 
 <h2>TO DO</h2>
 
 <ul>
 <li>Better handling of Errors and Exceptions</li>
+<li>Better display of data. With indicators as to the page that the link was discovered on and the order or line number that the link was discovered</li>
+<li>Display the number of times any link was displayed on each page</li>
+<li>Add more arguments to running the application so that extra functionality, such as only return local links or outside links, is possible</li>
 <li>Handle mailto: URIs</li>
 <li>Organize/Group and save malformed sites for further processing</li>
 <li>Explore different data returns for found links (discover and print attributes)</li>
