@@ -50,3 +50,14 @@ The tests verify that:
 The WebCrawler is run as an executable Java jar file. The website argument is the starting page of the website to crawl the optional depth parameter is the depth the WebCrawler is to run. If the depth parameter is not used then the depth is 1.
 
 java -jar webcrawler.jar <website> [depth]
+
+<h2>TO DO</h2>
+
+<ul>
+<li>Better handling of Errors and Exceptions</li>
+<li>Handle mailto: URIs</li>
+<li>Organize/Group and save malformed sites for further processing</li>
+<li>Explore different data returns for found links (discover and print attributes)</li>
+<li>Speed up/Optimize process for parsing sites</li>
+<li>Explore other means to store data(links) and return results</li>
+</ul>
