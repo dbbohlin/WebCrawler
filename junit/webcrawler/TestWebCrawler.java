@@ -530,7 +530,6 @@ class TestWebCrawler {
 				"http://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwiprodigital.com%2Fnews%2Fnew-survey-highlights-leadership-crisis-digital-transformation%2F&title=New Survey Highlights Leadership Crisis in Digital Transformation&summary=https%3A%2F%2Fwiprodigital.com%2Fnews%2Fnew-survey-highlights-leadership-crisis-digital-transformation%2F&source=wiprodigital.com";
 		try {
 			String returnString = crawler.crawl("http://wiprodigital.com", 2);
-//			System.out.println(returnString);
 			assertEquals(expectedReturn, returnString);
 		} catch (MalformedURLException | URISyntaxException e) {
 			e.printStackTrace();
